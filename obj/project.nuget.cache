@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "bXzTDnGZ/q0=",
+  "dgSpecHash": "UuUFgeuosps=",
   "success": true,
-  "projectFilePath": "/home/klaudia/C#/GameofLife/GameofLife.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/carlos/GameofLife/GameofLife.csproj",
+  "expectedPackageFiles": [
+    "/home/carlos/.nuget/packages/microsoft.aspnetcore.app.ref/10.0.4/microsoft.aspnetcore.app.ref.10.0.4.nupkg.sha512"
+  ],
   "logs": []
 }
