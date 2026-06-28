@@ -14,7 +14,7 @@ void dibujar_tablero ()
     {
         for (int j = 0; j<COLUMNAS;j++)
         {
-            Console.Write(tablero[i,j]  ? "█" : ".");
+            Console.Write(tablero[i,j]  ? "🟩" : "⬜");
 
         }
         Console.WriteLine();
