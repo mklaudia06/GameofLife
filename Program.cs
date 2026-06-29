@@ -1,24 +1,134 @@
-﻿const int FILAS = 10;
-const int COLUMNAS = 10;
+﻿const int FILAS = 20;
+const int COLUMNAS = 20;
 
 bool[,] tablero = new bool[FILAS,COLUMNAS];
+int simulacion =0;
 
-tablero[3,4] = true;
+tablero[4,3] = true;
 tablero[4,4] = true;
-tablero[4,5]= true;
+tablero[4,5] = true;
+tablero[4,11] = true;
+tablero[3,12] = true;
+tablero[3,18] = true;
+tablero[9,4] = true;
+tablero[9,9] = true;
+tablero[10,13] = true;
+tablero[12,5] = true;
+tablero[15,8] = true;
+tablero[16,3] = true;
+tablero[16,11] = true;
+tablero[18,5] = true;
+tablero[19,18] = true;
 
-void dibujar_tablero ()
+void dibujar_tablero (bool[,] tablero1)
 {
-    Console.Clear();
+    Console.WriteLine("SIMULACION: " + simulacion);
     for (int i = 0;i<FILAS;i++)
     {
         for (int j = 0; j<COLUMNAS;j++)
         {
-            Console.Write(tablero[i,j]  ? "🟩" : "⬜");
+            if (tablero1[i, j])
+            {
+                Console.Write("🟩");
+            }
+            else
+            {
+                Console.Write("⬜");
+            }
 
         }
         Console.WriteLine();
     }
+    Console.WriteLine();
 }
-dibujar_tablero();
+
+
+int contador_de_vecinos(int fila, int columna,bool[,] tablero)
+{
+    int contador = 0;
+    if (tablero [fila-1,columna])
+    {
+        contador +=1;
+    }
+    if (tablero [fila+1,columna])
+    {
+        contador +=1;
+    }
+    if (tablero [fila,columna-1])
+    {
+        contador +=1;
+    }
+    if (tablero [fila,columna+1])
+    {
+        contador +=1;
+    }
+    if (tablero [fila-1,columna-1])
+    {
+        contador +=1;
+    }
+    if (tablero [fila-1,columna+1])
+    {
+        contador +=1;
+    }
+    if (tablero [fila+1,columna-1])
+    {
+        contador += 1;
+    }
+    if (tablero [fila+1,columna+1])
+    {
+        contador +=1;
+    }
+    return contador;
+}
+
+bool[,] calcular_siguiente_generacion(bool [,] tablero2)
+{
+    bool[,] tablero_nuevo = new bool[FILAS,COLUMNAS];
+
+    for (int i = 1; i < FILAS - 2; i++)
+    {
+        for (int j = 1; j < COLUMNAS - 2; j++)
+        {
+            int vecinos = contador_de_vecinos(i,j,tablero2);
+            if (tablero2[i, j])
+            {
+                if (vecinos == 2 || vecinos == 3)
+                {
+                    tablero_nuevo[i,j] = true;
+                }
+                if (vecinos < 2)
+                {
+                    tablero_nuevo[i,j] = false;
+                }
+                if (vecinos  > 3)
+                {
+                    tablero_nuevo[i,j] = false;
+                }
+            }
+            else
+            {
+                if (vecinos == 3)
+                {
+                    tablero_nuevo[i,j] = true;
+                }
+            }
+        }
+    }
+    simulacion++;
+    return tablero_nuevo;
+}
+
+void Play (bool[,]tablero_inicial)
+{
+    dibujar_tablero(tablero_inicial);      
+    bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_inicial);
+
+    while (true)
+    {
+        dibujar_tablero(tablero_nuevo);
+        tablero_nuevo = calcular_siguiente_generacion(tablero_nuevo);
+    }
+} 
+Play(tablero);
+
 Console.ReadKey();
