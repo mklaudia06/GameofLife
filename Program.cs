@@ -1,31 +1,26 @@
-﻿const int FILAS = 20;
+﻿
+const int FILAS = 20;
 const int COLUMNAS = 20;
 
 bool[,] tablero = new bool[FILAS,COLUMNAS];
 int simulacion =0;
 
-tablero[4,3] = true;
-tablero[4,4] = true;
-tablero[4,5] = true;
-tablero[4,11] = true;
-tablero[3,12] = true;
-tablero[3,18] = true;
-tablero[9,4] = true;
-tablero[9,9] = true;
-tablero[10,13] = true;
-tablero[12,5] = true;
-tablero[15,8] = true;
-tablero[16,3] = true;
-tablero[16,11] = true;
-tablero[18,5] = true;
-tablero[19,18] = true;
+Random numero_aleatorio =  new Random();
+
+for (int i = 1; i < FILAS - 1 ; i++)
+{
+    for (int j = 1; j < COLUMNAS -1 ; j++)
+    {
+        tablero[i,j] = numero_aleatorio.NextDouble() < 0.4; 
+    }
+}
 
 void dibujar_tablero (bool[,] tablero1)
 {
     Console.WriteLine("SIMULACION: " + simulacion);
-    for (int i = 0;i<FILAS;i++)
+    for (int i = 0; i < FILAS ; i++)
     {
-        for (int j = 0; j<COLUMNAS;j++)
+        for (int j = 0; j < COLUMNAS; j++)
         {
             if (tablero1[i, j])
             {
@@ -46,37 +41,37 @@ void dibujar_tablero (bool[,] tablero1)
 int contador_de_vecinos(int fila, int columna,bool[,] tablero)
 {
     int contador = 0;
-    if (tablero [fila-1,columna])
+    if ( fila > 0 && tablero [fila-1,columna])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila+1,columna])
+    if (fila < FILAS - 1 && tablero [fila+1,columna])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila,columna-1])
+    if (columna > 0 && tablero [fila,columna-1])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila,columna+1])
+    if (columna < COLUMNAS -1 && tablero [fila,columna+1])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila-1,columna-1])
+    if (fila > 0 && columna > 0 && tablero [fila-1,columna-1])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila-1,columna+1])
+    if (fila > 0 && columna < COLUMNAS-1 && tablero [fila-1,columna+1])
     {
-        contador +=1;
+        contador ++;
     }
-    if (tablero [fila+1,columna-1])
+    if (fila < FILAS-1 && columna > 0 && tablero [fila+1,columna-1])
     {
-        contador += 1;
+        contador ++;
     }
-    if (tablero [fila+1,columna+1])
+    if (fila < FILAS-1 && columna < COLUMNAS-1  && tablero [fila+1,columna+1])
     {
-        contador +=1;
+        contador ++;
     }
     return contador;
 }
@@ -85,9 +80,9 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
 {
     bool[,] tablero_nuevo = new bool[FILAS,COLUMNAS];
 
-    for (int i = 1; i < FILAS - 2; i++)
+    for (int i = 1; i < FILAS - 1; i++)
     {
-        for (int j = 1; j < COLUMNAS - 2; j++)
+        for (int j = 1; j < COLUMNAS -1 ; j++)
         {
             int vecinos = contador_de_vecinos(i,j,tablero2);
             if (tablero2[i, j])
@@ -127,6 +122,7 @@ void Play (bool[,]tablero_inicial)
     {
         dibujar_tablero(tablero_nuevo);
         tablero_nuevo = calcular_siguiente_generacion(tablero_nuevo);
+        System.Threading.Thread.Sleep(200);
     }
 } 
 Play(tablero);
