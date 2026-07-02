@@ -1,10 +1,12 @@
-﻿
-const int FILAS = 20;
-const int COLUMNAS = 20;
+﻿Console.WriteLine("Dime la cantidad de filas que seas ponerle al tablero... ");
+int FILAS = Convert.ToInt16(Console.ReadLine());
+Console.WriteLine("Ok, ahora dime la cantidad de columnas...");
+int COLUMNAS = Convert.ToInt16(Console.ReadLine());
 
 bool[,] tablero = new bool[FILAS,COLUMNAS];
-int simulacion =0;
+int simulacion = 0;
 
+Console.WriteLine("Escribe de la forma fila0,columna3 fila1,columna2 en las celdas donde quieres poner las celulas vivas en tu tablero...");
 Random numero_aleatorio =  new Random();
 
 for (int i = 1; i < FILAS - 1 ; i++)
@@ -87,10 +89,7 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
             int vecinos = contador_de_vecinos(i,j,tablero2);
             if (tablero2[i, j])
             {
-                if (vecinos == 2 || vecinos == 3)
-                {
-                    tablero_nuevo[i,j] = true;
-                }
+              
                 if (vecinos < 2)
                 {
                     tablero_nuevo[i,j] = false;
