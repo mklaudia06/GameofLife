@@ -1,0 +1,8 @@
+1. Escoger el tablero y el tamano ✔️ 
+2. Generalizar la funcion contador de vecinos usando el array de direcciones ✔️ 
+3. Poner condiciones de parada
+4. Dado un tablero x :
+Como determinar cual es el tablero x-1,  es unico ese tablero? si o no? y diga el por que
+existe una unica forma de determinar el x-1? 
+Despues de aplicarle las reglas al x-1 es unico el tablero?
+
