@@ -159,6 +159,7 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
 void Play (bool[,]tablero_inicial)
 {
     
+<<<<<<< HEAD
     var lista_tableros = new List<bool[,]>();
     lista_tableros.Add((bool[,])tablero_inicial.Clone());
     dibujar_tablero(tablero_inicial);     
@@ -191,6 +192,20 @@ void Play (bool[,]tablero_inicial)
         tablero_actual = tablero_nuevo;
         System.Threading.Thread.Sleep(200);  
         
+=======
+    dibujar_tablero(tablero_inicial);      
+    bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_inicial);
+
+    while (true)
+    {
+        dibujar_tablero(tablero_nuevo);
+        tablero_nuevo = calcular_siguiente_generacion(tablero_nuevo);
+        System.Threading.Thread.Sleep(200);
+        if (tablero_nuevo == calcular_siguiente_generacion(tablero_nuevo))
+        {
+            break;
+        }
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
     }
 } 
 Play(tablero);

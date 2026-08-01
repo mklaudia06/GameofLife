@@ -22,6 +22,10 @@
 /home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.AssemblyInfoInputs.cache
 /home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.AssemblyInfo.cs
 /home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.csproj.CoreCompileInputs.cache
+<<<<<<< HEAD
+=======
+/home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.sourcelink.json
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
 /home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.dll
 /home/carlos/GameofLife/obj/Debug/net10.0/refint/GameofLife.dll
 /home/carlos/GameofLife/obj/Debug/net10.0/GameofLife.pdb

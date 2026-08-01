@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "/home/carlos/GameofLife/GameofLife.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/carlos/.nuget/NuGet/NuGet.Config"
+=======
+    "/home/klaudia/Desktop/GameofLife/GameofLife.csproj": {}
+  },
+  "projects": {
+    "/home/klaudia/Desktop/GameofLife/GameofLife.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/klaudia/Desktop/GameofLife/GameofLife.csproj",
+        "projectName": "GameofLife",
+        "projectPath": "/home/klaudia/Desktop/GameofLife/GameofLife.csproj",
+        "packagesPath": "/home/klaudia/.nuget/packages/",
+        "outputPath": "/home/klaudia/Desktop/GameofLife/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/klaudia/.nuget/NuGet/NuGet.Config"
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -24,6 +41,10 @@
         },
         "frameworks": {
           "net10.0": {
+<<<<<<< HEAD
+=======
+            "framework": "net10.0",
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
             "targetAlias": "net10.0",
             "projectReferences": {}
           }
@@ -38,10 +59,18 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
+<<<<<<< HEAD
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0": {
+=======
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net10.0": {
+          "framework": "net10.0",
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
           "targetAlias": "net10.0",
           "imports": [
             "net461",
@@ -54,18 +83,25 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+<<<<<<< HEAD
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
               "version": "[10.0.4, 10.0.4]"
             }
           ],
+=======
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.104/PortableRuntimeIdentifierGraph.json",
+=======
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.301/PortableRuntimeIdentifierGraph.json",
+>>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
