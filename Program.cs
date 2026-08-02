@@ -6,7 +6,7 @@ int COLUMNAS = Convert.ToInt16(Console.ReadLine());
 bool[,] tablero = new bool[FILAS,COLUMNAS];
 int simulacion = 0;
 
-Console.WriteLine($"Dado el tablero del tamano: {FILAS}x{COLUMNAS} escribe de la forma fila0,columna3;fila1,columna2;... en las celdas donde quieres poner las celulas vivas de tu tablero...");
+Console.WriteLine($"Dado el tablero del tamano: {FILAS}x{COLUMNAS} escribe de la forma fila0,columna3;fila1,columna2;... en las celdas donde quieres poner las celulas vivas de tu tablero inicial, dado que es un tablero de {FILAS}x{COLUMNAS}, las filas van desde la 0 hasta la {FILAS-1} y columnas van desde la cero hasta la {COLUMNAS-1} porfavor no salirse del indice");
 string celulas_vivas = Console.ReadLine();
 
 int[][] resultado = celulas_vivas
@@ -20,6 +20,10 @@ foreach (int[] vector in resultado)
 {
     int fila = vector[0];
     int columna = vector[1];
+    if (fila<0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS)
+    {
+        Console.WriteLine($"Error, la coordenada {fila},{columna} esta fuera del tablero");
+    }
     tablero[fila,columna] = true;
 }
 
@@ -75,10 +79,6 @@ int contador_de_vecinos (int fila, int columna, bool[,] tablero)
                 contador++;
             }
         }
-    }
-    else
-    {
-        //aqui verificaria los bordes aunque no tenga los 8 vecinos, o sea si es una esquina tiene 3 vecinos y trabajo sobre eso, y si no tiene 5 vecinos y trabajo sobre eso
     }
     
     return contador;
@@ -156,13 +156,42 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
     return tablero_nuevo;
 }
 
+bool TodasMuertas(bool[,] tablero)
+{
+    for (int i = 0; i < FILAS; i++)
+    {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
+            if (tablero[i,j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool TablerosIguales(bool[,] tablero1, bool[,] tablero2)
+{
+    for (int i = 0; i < FILAS; i++)
+    {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
+            if(tablero1[i,j] != tablero2[i, j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Play (bool[,]tablero_inicial)
 {
     
-<<<<<<< HEAD
     var lista_tableros = new List<bool[,]>();
-    lista_tableros.Add((bool[,])tablero_inicial.Clone());
-    dibujar_tablero(tablero_inicial);     
+    dibujar_tablero(tablero_inicial);   
+    lista_tableros.Add((bool[,])tablero_inicial.Clone());               
     System.Threading.Thread.Sleep(200);
 
     bool [,] tablero_actual = tablero_inicial; 
@@ -174,38 +203,30 @@ void Play (bool[,]tablero_inicial)
         bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_actual);
         lista_tableros.Add((bool[,])tablero_nuevo.Clone());
 
-        int len = lista_tableros.Count;
-        if (len >= 4)
+        int len_lista_tableros = lista_tableros.Count;
+        dibujar_tablero(tablero_nuevo);
+        if (TodasMuertas(lista_tableros[len_lista_tableros - 1]))
         {
-            if (lista_tableros[lista_tableros.Count -1] == lista_tableros[lista_tableros.Count -2] && lista_tableros[lista_tableros.Count -2] == lista_tableros[lista_tableros.Count -3])
+            Console.WriteLine("¡Lo sentimos todas las celulas murieron! ¡Game over!"); 
+            break;
+        }
+        if (len_lista_tableros >= 4)
+        {
+            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -2]))
             {
                 Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
                 break;
             };
-            if (lista_tableros[lista_tableros.Count-1] == lista_tableros[lista_tableros.Count-4]&& lista_tableros[lista_tableros.Count-2]==lista_tableros[lista_tableros.Count-5]&& lista_tableros[lista_tableros.Count - 3] == lista_tableros[lista_tableros.Count - 6])
+            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) && TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros -5]) && TablerosIguales(lista_tableros[len_lista_tableros - 3],lista_tableros[len_lista_tableros - 6]))
             {
                 Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
                 break;
             }
         } 
-        dibujar_tablero(tablero_nuevo);
+        
         tablero_actual = tablero_nuevo;
         System.Threading.Thread.Sleep(200);  
         
-=======
-    dibujar_tablero(tablero_inicial);      
-    bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_inicial);
-
-    while (true)
-    {
-        dibujar_tablero(tablero_nuevo);
-        tablero_nuevo = calcular_siguiente_generacion(tablero_nuevo);
-        System.Threading.Thread.Sleep(200);
-        if (tablero_nuevo == calcular_siguiente_generacion(tablero_nuevo))
-        {
-            break;
-        }
->>>>>>> bcedeba71be014b904621303c63a12dca8cf329b
     }
 } 
 Play(tablero);
