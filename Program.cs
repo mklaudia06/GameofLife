@@ -217,11 +217,23 @@ void Play (bool[,]tablero_inicial)
                 Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
                 break;
             };
-            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) && TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros -5]) && TablerosIguales(lista_tableros[len_lista_tableros - 3],lista_tableros[len_lista_tableros - 6]))
+            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -3]) &&
+                TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros - 4]))
             {
-                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
+                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!");
                 break;
             }
+        if (len_lista_tableros >= 6)
+            {
+                if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) && 
+                TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros -5]) && 
+                TablerosIguales(lista_tableros[len_lista_tableros -3],lista_tableros[len_lista_tableros -6]))
+                {
+                    Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
+                    break;
+                }
+            }
+       
         } 
         
         tablero_actual = tablero_nuevo;
