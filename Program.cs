@@ -210,32 +210,31 @@ void Play (bool[,]tablero_inicial)
             Console.WriteLine("¡Lo sentimos todas las celulas murieron! ¡Game over!"); 
             break;
         }
+        if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -2]))
+        {
+            Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
+            break;
+        }
         if (len_lista_tableros >= 4)
         {
-            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -2]))
-            {
-                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
-                break;
-            };
             if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -3]) &&
                 TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros - 4]))
             {
                 Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!");
                 break;
             }
+        }
         if (len_lista_tableros >= 6)
-            {
-                if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) && 
+        {
+            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) &&  //periodo 3, por eso es -1, -1-periodo = 4
                 TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros -5]) && 
-                TablerosIguales(lista_tableros[len_lista_tableros -3],lista_tableros[len_lista_tableros -6]))
-                {
-                    Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
-                    break;
-                }
+                TablerosIguales(lista_tableros[len_lista_tableros -3],lista_tableros[len_lista_tableros -6])) 
+            {
+                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
+                break;
             }
+        }
        
-        } 
-        
         tablero_actual = tablero_nuevo;
         System.Threading.Thread.Sleep(200);  
         
