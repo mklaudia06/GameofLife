@@ -1,245 +1,217 @@
-﻿Console.WriteLine("Dime la cantidad de filas que seas ponerle al tablero... ");
-int FILAS = Convert.ToInt16(Console.ReadLine());
-Console.WriteLine("Ok, ahora dime la cantidad de columnas...");
-int COLUMNAS = Convert.ToInt16(Console.ReadLine());
+const int FrameDelayMilliseconds = 200;
 
-bool[,] tablero = new bool[FILAS,COLUMNAS];
-int simulacion = 0;
+var rows = ReadPositiveInteger("Indica la cantidad de filas del tablero: ");
+var columns = ReadPositiveInteger("Indica la cantidad de columnas del tablero: ");
+var initialBoard = ReadInitialBoard(rows, columns);
 
-Console.WriteLine($"Dado el tablero del tamano: {FILAS}x{COLUMNAS} escribe de la forma fila0,columna3;fila1,columna2;... en las celdas donde quieres poner las celulas vivas de tu tablero inicial, dado que es un tablero de {FILAS}x{COLUMNAS}, las filas van desde la 0 hasta la {FILAS-1} y columnas van desde la cero hasta la {COLUMNAS-1} porfavor no salirse del indice");
-string celulas_vivas = Console.ReadLine();
+RunSimulation(initialBoard);
 
-int[][] resultado = celulas_vivas
-    .Split(';')                                    
-    .Select(fila => fila.Split(',')                
-        .Select(num => int.Parse(num))           
-        .ToArray())                               
-    .ToArray();                                   
-
-
-foreach (int[] vector in resultado)
+static int ReadPositiveInteger(string prompt)
 {
-    int fila = vector[0];
-    int columna = vector[1];
-    if (fila<0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS)
+    while (true)
     {
-        Console.WriteLine($"Error, la coordenada {fila},{columna} esta fuera del tablero");
+        Console.Write(prompt);
+
+        if (int.TryParse(Console.ReadLine(), out var value) && value > 0)
+        {
+            return value;
+        }
+
+        Console.WriteLine("Escribe un número entero mayor que cero.");
     }
-    tablero[fila,columna] = true;
 }
 
-
-void dibujar_tablero (bool[,] tablero1)
+static bool[,] ReadInitialBoard(int rows, int columns)
 {
-    Console.WriteLine("SIMULACION: " + simulacion);
-    for (int i = 0; i < FILAS ; i++)
+    while (true)
     {
-        for (int j = 0; j < COLUMNAS; j++)
-        {
-            if (tablero1[i, j])
-            {
-                Console.Write("🟩");
-            }
-            else
-            {
-                Console.Write("⬜");
-            }
+        Console.WriteLine(
+            $"Escribe las células vivas como fila,columna;fila,columna. " +
+            $"Filas: 0 a {rows - 1}; columnas: 0 a {columns - 1}. " +
+            "Deja la entrada vacía para empezar sin células vivas.");
 
+        var input = Console.ReadLine() ?? string.Empty;
+        if (!TryParseCoordinates(input, rows, columns, out var liveCells, out var error))
+        {
+            Console.WriteLine(error);
+            continue;
         }
-        Console.WriteLine();
-        System.Threading.Thread.Sleep(200);
+
+        var board = new bool[rows, columns];
+        foreach (var (row, column) in liveCells)
+        {
+            board[row, column] = true;
+        }
+
+        return board;
     }
-    Console.WriteLine();
 }
 
-
-
-
-int contador_de_vecinos (int fila, int columna, bool[,] tablero)
+static bool TryParseCoordinates(
+    string input,
+    int rows,
+    int columns,
+    out HashSet<(int Row, int Column)> liveCells,
+    out string error)
 {
-    int[,] array_de_direcciones = 
+    liveCells = [];
+    error = string.Empty;
+
+    if (string.IsNullOrWhiteSpace(input))
     {
-        {-1,0}, 
-        {1,0},  
-        {0,-1}, 
-        {0,1},   
-        {-1,-1}, 
-        {-1,1},  
-        {1,-1},  
-        {1,1}   
-    };
-    int contador = 0;
-    if (fila > 0 && columna > 0  && fila < FILAS - 1 && columna < COLUMNAS - 1)
+        return true;
+    }
+
+    foreach (var coordinate in input.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
     {
-        for (int i = 0; i < array_de_direcciones.GetLength(0); i++)
+        var values = coordinate.Split(',', StringSplitOptions.TrimEntries);
+        if (values.Length != 2 ||
+            !int.TryParse(values[0], out var row) ||
+            !int.TryParse(values[1], out var column))
         {
-            int fila_vecina = fila + array_de_direcciones[i,0];
-            int columna_vecina = columna + array_de_direcciones[i,1];
-
-            if (tablero[fila_vecina, columna_vecina])
-            {
-                contador++;
-            }
+            error = $"La coordenada '{coordinate}' no tiene el formato fila,columna.";
+            return false;
         }
-    }
-    
-    return contador;
-}
 
-/*int contador_de_vecinos(int fila, int columna,bool[,] tablero)
-{
-    int contador = 0;
-    if ( fila > 0 && tablero [fila-1,columna])
-    {
-        contador ++;
-    }
-    if (fila < FILAS - 1 && tablero [fila+1,columna])
-    {
-        contador ++;
-    }
-    if (columna > 0 && tablero [fila,columna-1])
-    {
-        contador ++;
-    }
-    if (columna < COLUMNAS -1 && tablero [fila,columna+1])
-    {
-        contador ++;
-    }
-    if (fila > 0 && columna > 0 && tablero [fila-1,columna-1])
-    {
-        contador ++;
-    }
-    if (fila > 0 && columna < COLUMNAS-1 && tablero [fila-1,columna+1])
-    {
-        contador ++;
-    }
-    if (fila < FILAS-1 && columna > 0 && tablero [fila+1,columna-1])
-    {
-        contador ++;
-    }
-    if (fila < FILAS-1 && columna < COLUMNAS-1  && tablero [fila+1,columna+1])
-    {
-        contador ++;
-    }
-    return contador;
-}*/
-
-bool[,] calcular_siguiente_generacion(bool [,] tablero2)
-{
-    bool[,] tablero_nuevo = new bool[FILAS,COLUMNAS];
-
-    for (int i = 1; i < FILAS - 1; i++)
-    {
-        for (int j = 1; j < COLUMNAS -1 ; j++)
+        if (row < 0 || row >= rows || column < 0 || column >= columns)
         {
-            int vecinos = contador_de_vecinos(i,j,tablero2);
-            if (tablero2[i, j])
-            {
-              
-                if (vecinos < 2)
-                {
-                    tablero_nuevo[i,j] = false;
-                }
-                if (vecinos  > 3)
-                {
-                    tablero_nuevo[i,j] = false;
-                }
-            }
-            else
-            {
-                if (vecinos == 3)
-                {
-                    tablero_nuevo[i,j] = true;
-                }
-            }
+            error = $"La coordenada {row},{column} está fuera del tablero.";
+            return false;
         }
-    }
-    simulacion++;
-    return tablero_nuevo;
-}
 
-bool TodasMuertas(bool[,] tablero)
-{
-    for (int i = 0; i < FILAS; i++)
-    {
-        for (int j = 0; j < COLUMNAS; j++)
-        {
-            if (tablero[i,j])
-            {
-                return false;
-            }
-        }
+        liveCells.Add((row, column));
     }
+
     return true;
 }
 
-bool TablerosIguales(bool[,] tablero1, bool[,] tablero2)
+static void RunSimulation(bool[,] initialBoard)
 {
-    for (int i = 0; i < FILAS; i++)
+    var currentBoard = initialBoard;
+    var generation = 0;
+    var previousStates = new HashSet<string> { GetBoardKey(currentBoard) };
+
+    DrawBoard(currentBoard, generation);
+
+    if (!HasLiveCells(currentBoard))
     {
-        for (int j = 0; j < COLUMNAS; j++)
-        {
-            if(tablero1[i,j] != tablero2[i, j])
-            {
-                return false;
-            }
-        }
+        Console.WriteLine("No hay células vivas. Fin de la simulación.");
+        return;
     }
-    return true;
-}
-
-void Play (bool[,]tablero_inicial)
-{
-    
-    var lista_tableros = new List<bool[,]>();
-    dibujar_tablero(tablero_inicial);   
-    lista_tableros.Add((bool[,])tablero_inicial.Clone());               
-
-    bool [,] tablero_actual = tablero_inicial; 
-
-    
 
     while (true)
     {
-        bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_actual);
-        lista_tableros.Add((bool[,])tablero_nuevo.Clone());
+        Thread.Sleep(FrameDelayMilliseconds);
 
-        int len_lista_tableros = lista_tableros.Count();
-        dibujar_tablero(tablero_nuevo);
-        if (TodasMuertas(lista_tableros[len_lista_tableros - 1]))
+        var nextBoard = CalculateNextGeneration(currentBoard);
+        generation++;
+        DrawBoard(nextBoard, generation);
+
+        if (!HasLiveCells(nextBoard))
         {
-            Console.WriteLine("¡Lo sentimos todas las celulas murieron! ¡Game over!"); 
-            break;
-        }   
-        if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -2]))
-        {
-            Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
-            break;
+            Console.WriteLine("Todas las células murieron. Fin de la simulación.");
+            return;
         }
-        if (len_lista_tableros >= 4)
+
+        if (!previousStates.Add(GetBoardKey(nextBoard)))
         {
-            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -3]) &&
-                TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros - 4]))
-            {
-                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!");
-                break;
-            }
+            Console.WriteLine("La simulación alcanzó un estado repetido. Fin de la simulación.");
+            return;
         }
-        if (len_lista_tableros >= 6)
-        {
-            if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -4]) &&  //periodo 3, por eso es -1, -1-periodo = 4
-                TablerosIguales(lista_tableros[len_lista_tableros -2],lista_tableros[len_lista_tableros -5]) && 
-                TablerosIguales(lista_tableros[len_lista_tableros -3],lista_tableros[len_lista_tableros -6])) 
-            {
-                Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
-                break;
-            }
-        }
-       
-        tablero_actual = tablero_nuevo;
-        
+
+        currentBoard = nextBoard;
     }
-} 
-Play(tablero);
+}
 
-Console.ReadKey();
+static bool[,] CalculateNextGeneration(bool[,] board)
+{
+    var rows = board.GetLength(0);
+    var columns = board.GetLength(1);
+    var nextBoard = new bool[rows, columns];
+
+    for (var row = 0; row < rows; row++)
+    {
+        for (var column = 0; column < columns; column++)
+        {
+            var liveNeighbors = CountLiveNeighbors(board, row, column);
+            nextBoard[row, column] = board[row, column]
+                ? liveNeighbors is 2 or 3
+                : liveNeighbors == 3;
+        }
+    }
+
+    return nextBoard;
+}
+
+static int CountLiveNeighbors(bool[,] board, int row, int column)
+{
+    var rows = board.GetLength(0);
+    var columns = board.GetLength(1);
+    var count = 0;
+
+    for (var rowOffset = -1; rowOffset <= 1; rowOffset++)
+    {
+        for (var columnOffset = -1; columnOffset <= 1; columnOffset++)
+        {
+            if (rowOffset == 0 && columnOffset == 0)
+            {
+                continue;
+            }
+
+            var neighborRow = row + rowOffset;
+            var neighborColumn = column + columnOffset;
+
+            if (neighborRow >= 0 && neighborRow < rows &&
+                neighborColumn >= 0 && neighborColumn < columns &&
+                board[neighborRow, neighborColumn])
+            {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+static bool HasLiveCells(bool[,] board)
+{
+    foreach (var cell in board)
+    {
+        if (cell)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static string GetBoardKey(bool[,] board)
+{
+    var cells = new char[board.Length];
+    var index = 0;
+
+    foreach (var cell in board)
+    {
+        cells[index++] = cell ? '1' : '0';
+    }
+
+    return new string(cells);
+}
+
+static void DrawBoard(bool[,] board, int generation)
+{
+    Console.WriteLine($"SIMULACIÓN: {generation}");
+
+    for (var row = 0; row < board.GetLength(0); row++)
+    {
+        for (var column = 0; column < board.GetLength(1); column++)
+        {
+            Console.Write(board[row, column] ? "🟩" : "⬜");
+        }
+
+        Console.WriteLine();
+    }
+
+    Console.WriteLine();
+}
