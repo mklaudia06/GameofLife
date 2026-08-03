@@ -16,6 +16,7 @@ int[][] resultado = celulas_vivas
         .ToArray())                               
     .ToArray();                                   
 
+
 foreach (int[] vector in resultado)
 {
     int fila = vector[0];
@@ -46,6 +47,7 @@ void dibujar_tablero (bool[,] tablero1)
 
         }
         Console.WriteLine();
+        System.Threading.Thread.Sleep(200);
     }
     Console.WriteLine();
 }
@@ -192,7 +194,6 @@ void Play (bool[,]tablero_inicial)
     var lista_tableros = new List<bool[,]>();
     dibujar_tablero(tablero_inicial);   
     lista_tableros.Add((bool[,])tablero_inicial.Clone());               
-    System.Threading.Thread.Sleep(200);
 
     bool [,] tablero_actual = tablero_inicial; 
 
@@ -203,13 +204,13 @@ void Play (bool[,]tablero_inicial)
         bool[,] tablero_nuevo = calcular_siguiente_generacion(tablero_actual);
         lista_tableros.Add((bool[,])tablero_nuevo.Clone());
 
-        int len_lista_tableros = lista_tableros.Count;
+        int len_lista_tableros = lista_tableros.Count();
         dibujar_tablero(tablero_nuevo);
         if (TodasMuertas(lista_tableros[len_lista_tableros - 1]))
         {
             Console.WriteLine("¡Lo sentimos todas las celulas murieron! ¡Game over!"); 
             break;
-        }
+        }   
         if (TablerosIguales(lista_tableros[len_lista_tableros -1],lista_tableros[len_lista_tableros -2]))
         {
             Console.WriteLine("¡Lo sentimos entraste en un bucle! ¡Game over!"); 
@@ -236,7 +237,6 @@ void Play (bool[,]tablero_inicial)
         }
        
         tablero_actual = tablero_nuevo;
-        System.Threading.Thread.Sleep(200);  
         
     }
 } 
