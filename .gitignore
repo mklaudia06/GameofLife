@@ -1,0 +1,8 @@
+# Artefactos generados por la compilación de .NET/C#
+[Bb]in/
+[Oo]bj/
+
+# Archivos temporales de Visual Studio
+.vs/
+*.user
+*.suo
