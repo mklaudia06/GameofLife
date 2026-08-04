@@ -52,35 +52,121 @@ void dibujar_tablero (bool[,] tablero1)
     Console.WriteLine();
 }
 
-
+int Contador(int fila, int columna, bool[,] tablero, int[,] direcciones)
+{
+    int contador = 0;
+    for (int i = 0; i < direcciones.GetLength(0); i++)
+    {
+        int fila_vecina = fila + direcciones[i,0];
+        int columna_vecina = columna + direcciones[i,1];
+        if (tablero[fila_vecina, columna_vecina])
+        {
+            contador++;
+        }
+    }
+    return contador;
+}
 
 
 int contador_de_vecinos (int fila, int columna, bool[,] tablero)
 {
-    int[,] array_de_direcciones = 
-    {
-        {-1,0}, 
-        {1,0},  
-        {0,-1}, 
-        {0,1},   
-        {-1,-1}, 
-        {-1,1},  
-        {1,-1},  
-        {1,1}   
-    };
+    
     int contador = 0;
-    if (fila > 0 && columna > 0  && fila < FILAS - 1 && columna < COLUMNAS - 1)
+    if (fila == 0 && columna == COLUMNAS - 1)
     {
-        for (int i = 0; i < array_de_direcciones.GetLength(0); i++)
+        int [,] direcciones =
         {
-            int fila_vecina = fila + array_de_direcciones[i,0];
-            int columna_vecina = columna + array_de_direcciones[i,1];
-
-            if (tablero[fila_vecina, columna_vecina])
-            {
-                contador++;
-            }
-        }
+            {0,-1},{1,-1},{1,0}
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+        
+    }
+    else if (fila == FILAS-1 && columna == 0)
+    {
+        int [,] direcciones =
+        {
+            {-1,0},{-1,1},{0,1}
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (fila == 0 && columna == 0)
+    {
+        int [,] direcciones =
+        {
+            {1,0},{1,1},{0,1}
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (fila == FILAS -1 && columna == COLUMNAS - 1)
+    {
+        int [,] direcciones =
+        {
+            {-1,0},{-1,-1},{0,-1}
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (fila > 0 && columna > 0  && fila < FILAS - 1 && columna < COLUMNAS - 1)
+    {
+        int[,] direcciones = 
+        {
+            {-1,0}, 
+            {1,0},  
+            {0,-1}, 
+            {0,1},   
+            {-1,-1}, 
+            {-1,1},  
+            {1,-1},  
+            {1,1}   
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (fila == 0 && columna < COLUMNAS -1 && 0 < columna) 
+    {
+        int[,] direcciones = 
+        {
+            {1,0},  
+            {0,-1}, 
+            {0,1},   
+            {1,-1},  
+            {1,1}   
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (fila == FILAS -1 && columna < COLUMNAS -1 && 0 < columna) 
+    {
+        int[,] direcciones = 
+        {
+            {-1,0},  
+            {0,-1}, 
+            {0,1},   
+            {-1,-1},  
+            {-1,1}   
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (columna == 0 && fila < FILAS -1 && 0 < fila) 
+    {
+        int[,] direcciones = 
+        {
+            {-1,0},  
+            {1,0}, 
+            {0,1},   
+            {1,1},  
+            {-1,1}   
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
+    }
+    else if (columna == COLUMNAS -1 && fila < FILAS -1 && 0 < fila) 
+    {
+        int[,] direcciones = 
+        {
+            {-1,0},
+            {-1,-1},   
+            {0,-1}, 
+            {1,-1},   
+            {1,0}   
+        };
+        contador += Contador(fila,columna,tablero,direcciones);
     }
     
     return contador;
@@ -128,9 +214,9 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
 {
     bool[,] tablero_nuevo = new bool[FILAS,COLUMNAS];
 
-    for (int i = 1; i < FILAS - 1; i++)
+    for (int i = 0; i < FILAS; i++)
     {
-        for (int j = 1; j < COLUMNAS -1 ; j++)
+        for (int j = 0; j < COLUMNAS; j++)
         {
             int vecinos = contador_de_vecinos(i,j,tablero2);
             if (tablero2[i, j])
