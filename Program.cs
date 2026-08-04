@@ -230,6 +230,10 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
                 {
                     tablero_nuevo[i,j] = false;
                 }
+                if ( vecinos  == 2 || vecinos == 3)
+                {
+                    tablero[i,j] = true;
+                }
             }
             else
             {
