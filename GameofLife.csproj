@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Prevent nested test-project artifacts from being compiled as part of the application. -->
+  <ItemGroup>
+    <Compile Remove="GameofLife.Tests/**/*.cs" />
+  </ItemGroup>
+
 </Project>
