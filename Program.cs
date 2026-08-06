@@ -6,27 +6,37 @@ int COLUMNAS = Convert.ToInt16(Console.ReadLine());
 bool[,] tablero = new bool[FILAS,COLUMNAS];
 int simulacion = 0;
 
-Console.WriteLine($"Dado el tablero del tamano: {FILAS}x{COLUMNAS} escribe de la forma fila0,columna3;fila1,columna2;... en las celdas donde quieres poner las celulas vivas de tu tablero inicial, dado que es un tablero de {FILAS}x{COLUMNAS}, las filas van desde la 0 hasta la {FILAS-1} y columnas van desde la cero hasta la {COLUMNAS-1} porfavor no salirse del indice");
-string celulas_vivas = Console.ReadLine();
+bool coordenadas_correctas;
+do
+{
+    coordenadas_correctas = true;
 
-int[][] resultado = celulas_vivas
+    Console.WriteLine($"Dado el tablero del tamano: {FILAS}x{COLUMNAS} escribe de la forma fila0,columna3;fila1,columna2;... en las celdas donde quieres poner las celulas vivas de tu tablero inicial, dado que es un tablero de {FILAS}x{COLUMNAS}, las filas van desde la 0 hasta la {FILAS-1} y columnas van desde la cero hasta la {COLUMNAS-1} porfavor no salirse del indice");
+    string celulas_vivas = Console.ReadLine();
+
+    int[][] resultado = celulas_vivas
     .Split(';')                                    
     .Select(fila => fila.Split(',')                
         .Select(num => int.Parse(num))           
         .ToArray())                               
-    .ToArray();                                   
+    .ToArray();
 
-
-foreach (int[] vector in resultado)
-{
-    int fila = vector[0];
-    int columna = vector[1];
-    if (fila<0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS)
+    foreach (int[] vector in resultado)
     {
-        Console.WriteLine($"Error, la coordenada {fila},{columna} esta fuera del tablero");
+        int fila = vector[0];
+        int columna = vector[1];
+        if (fila<0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS)
+        {
+            Console.WriteLine($"Error, la coordenada {fila},{columna} esta fuera del tablero");
+            coordenadas_correctas = false;
+            break;
+        }
+        tablero[fila,columna] = true;
     }
-    tablero[fila,columna] = true;
-}
+
+} while(!coordenadas_correctas);
+
+
 
 
 void dibujar_tablero (bool[,] tablero1)
@@ -232,7 +242,7 @@ bool[,] calcular_siguiente_generacion(bool [,] tablero2)
                 }
                 if ( vecinos  == 2 || vecinos == 3)
                 {
-                    tablero[i,j] = true;
+                    tablero_nuevo[i,j] = true;
                 }
             }
             else
